@@ -581,6 +581,7 @@ export function normalizeEntities(
         replace_with?: string;
         split_multiday_events?: boolean;
         event_type?: Types.EventType;
+        days_to_show?: number;
         days_of_week?: Types.DaysOfWeekFilter;
         allday_expires_at?: string;
       }
@@ -631,6 +632,7 @@ export function normalizeEntities(
           replace_with: item.replace_with,
           split_multiday_events: item.split_multiday_events,
           event_type: item.event_type,
+          days_to_show: toValidNumber(item.days_to_show, 1),
           days_of_week: item.days_of_week,
           allday_expires_at: item.allday_expires_at,
         };

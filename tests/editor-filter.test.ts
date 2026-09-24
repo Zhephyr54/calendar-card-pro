@@ -913,6 +913,7 @@ describe('editor: the order of the two panels', () => {
       'accent_color_mode',
       'accent_color',
       '# heading_filters',
+      'days_to_show',
       'days_of_week',
       'event_type',
       'allday_expires_at',
@@ -1004,6 +1005,7 @@ describe('editor: the order of the two panels', () => {
     const contentFilters = optionsUnder(contentSchema(), 'heading_filters');
 
     expect(entityFilters).toEqual([
+      'days_to_show',
       'days_of_week',
       'event_type',
       'allday_expires_at',
@@ -1020,9 +1022,10 @@ describe('editor: the order of the two panels', () => {
      * This replaces a "both panels start `heading_filters` with the same key" assertion,
      * which was a **proxy** that held only while `event_type` was the sole shared option
      * and every other key sat after it. The per-calendar panel now opens with
-     * `days_of_week`, which is per-calendar only — there is no card-level counterpart to
-     * disagree with — so the proxy went false without anything being wrong. Relative order
-     * over the intersection is the property that was actually meant.
+     * `days_to_show` and `days_of_week`, neither of which the card-level *filters* section
+     * carries — `days_to_show` has a card-wide counterpart, but it leads the content panel
+     * ahead of every heading rather than sitting under `heading_filters` — so the proxy went
+     * false without anything being wrong. Relative order over the intersection is the property that was actually meant.
      *
      * At one shared option this is trivially satisfied, which is why the set is pinned
      * above: the assertion becomes real the moment a second key is shared, and cannot go

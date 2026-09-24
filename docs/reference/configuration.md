@@ -71,7 +71,7 @@ the card-wide settings for that one calendar:
 `show_time` · `show_location` · `location_icon` · `show_description` ·
 `compact_events_to_show` · `blocklist` · `allowlist` · `filter_field` ·
 `replace_field` · `replace_pattern` · `replace_with` ·
-`split_multiday_events` · `event_type` · `allday_expires_at` · `days_of_week`
+`split_multiday_events` · `event_type` · `days_to_show` · `allday_expires_at` · `days_of_week`
 
 **→ [Entity configuration options](/features/core-settings#available-options-for-entity-configuration-objects)** — full table, with filtering examples.
 **→ [Rewriting what an event says](/features/core-settings#text-replacement)** — `replace_pattern` and `replace_with`, and what each does when the other is left out.

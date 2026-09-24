@@ -24,7 +24,7 @@ import { ENTITY_ICON_SENTINEL, entityIcon, isEntityIconSentinel } from '../../ut
 import * as Helpers from '../../utils/helpers';
 import { firstPersonEntityId, isPersonEntityId } from '../../utils/person-pictures';
 
-const NUMERIC_KEYS: ReadonlySet<string> = new Set(['compact_events_to_show']);
+const NUMERIC_KEYS: ReadonlySet<string> = new Set(['compact_events_to_show', 'days_to_show']);
 
 const NON_TRANSFERABLE_KEYS: ReadonlySet<string> = new Set(['entity']);
 

@@ -75,6 +75,7 @@ const PER_CALENDAR_OPTIONS: ReadonlyArray<[string, unknown, unknown]> = [
   ['replace_with', 'Busy', 'Elsewhere'],
   ['split_multiday_events', true, false],
   ['event_type', 'all_day', 'timed'],
+  ['days_to_show', 2, 5],
   ['days_of_week', 'weekdays', 'weekends'],
   ['allday_expires_at', '10:00', '18:00'],
 ];

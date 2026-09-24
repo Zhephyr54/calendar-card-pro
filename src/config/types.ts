@@ -420,6 +420,15 @@ export interface EntityConfig {
   replace_with?: string;
   split_multiday_events?: boolean;
   event_type?: EventType;
+  /**
+   * How many days, counted from the card's start date, this calendar's events may land on.
+   *
+   * A per-calendar override of the card-wide `days_to_show`, and never wider than it: the
+   * card fetches one window for every calendar, so a value above the card's is clamped to
+   * it. Judged on the **display date** like `days_of_week`, so a multi-day event split
+   * into segments keeps only the segments inside the horizon.
+   */
+  days_to_show?: number;
   days_of_week?: DaysOfWeekFilter;
   /**
    * Clock time at which this calendar's all-day events start counting as past, `HH:MM`.

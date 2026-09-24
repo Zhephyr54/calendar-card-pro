@@ -2847,6 +2847,7 @@ describe('editor: per-calendar settings', () => {
         'color',
         'compact_events_to_show',
         'days_of_week',
+        'days_to_show',
         'filter_field',
         'label',
         'label_icon_color',

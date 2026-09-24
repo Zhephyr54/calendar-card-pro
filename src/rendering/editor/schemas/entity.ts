@@ -373,6 +373,14 @@ export function buildEntitySchema(ctx: SchemaCtx): HaFormSchema[] {
     // `days_of_week` or `allday_expires_at` to precede it, so it too opens with the
     // coarsest option it actually carries.
     heading('heading_filters'),
+    // Coarser still than `days_of_week`: how far ahead this calendar reaches at all comes
+    // before which of those days qualify. A number rather than a `choice`, like
+    // `compact_events_to_show` below it, and `min: 1` because zero days is not a calendar
+    // that shows nothing but a value `normalizeEntities` drops.
+    {
+      name: 'days_to_show',
+      selector: { number: { min: 1, mode: 'box' } },
+    },
     choice(ctx.language, 'days_of_week'),
     choice(ctx.language, 'event_type'),
     { name: 'allday_expires_at', selector: { text: { type: 'time' } } },

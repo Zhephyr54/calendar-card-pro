@@ -428,6 +428,35 @@ function dayPassesWeekFilter(displayDate: Date, filter: Types.DaysOfWeekFilter):
 }
 
 /**
+ * The first midnight past one calendar's own `days_to_show`, or `undefined` when the
+ * calendar has none and the card-wide window applies.
+ *
+ * Clamped to the card's `days_to_show` the card fetches a single window for every calendar,
+ * so a wider per-calendar value would have no events to show and would silently look like a bug.
+ * `normalizeEntities` has already rejected anything that is not a positive number.
+ *
+ * @param entityConfig The calendar's own settings, where it has any
+ * @param referenceStart Midnight on the card's start date
+ * @param cardDays The card-wide `days_to_show`, already view-resolved
+ * @returns The exclusive upper bound of that calendar's window
+ */
+function resolveEntityWindowEnd(
+  entityConfig: Types.EntityConfig | undefined,
+  referenceStart: Date,
+  cardDays: number,
+): Date | undefined {
+  const configured = entityConfig?.days_to_show;
+
+  if (typeof configured !== 'number' || !Number.isFinite(configured) || configured < 1) {
+    return undefined;
+  }
+
+  const end = new Date(referenceStart);
+  end.setDate(end.getDate() + Math.min(configured, cardDays));
+  return end;
+}
+
+/**
  * Group events by display day.
  *
  * @param rawEvents Calendar events to group
@@ -583,6 +612,24 @@ export function groupEventsByDay(
     if (
       daysOfWeek &&
       !dayPassesWeekFilter(resolveDisplayDate(startDate, endDate, referenceStart), daysOfWeek)
+    ) {
+      return false;
+    }
+
+    // The per-calendar horizon, read against the display date for the same reason
+    // `days_of_week` is: an unsplit multi-day event that began before the window is drawn
+    // on the window's first day, and that row is inside every horizon however early the
+    // event started. Split segments carry their own start and are judged one by one, so a
+    // three-day event on a two-day calendar keeps exactly its first two days.
+    const entityWindowEnd = resolveEntityWindowEnd(
+      event._matchedConfig,
+      referenceStart,
+      config.days_to_show,
+    );
+
+    if (
+      entityWindowEnd &&
+      resolveDisplayDate(startDate, endDate, referenceStart) >= entityWindowEnd
     ) {
       return false;
     }

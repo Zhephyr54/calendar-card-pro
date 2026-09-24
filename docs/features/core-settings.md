@@ -42,6 +42,7 @@ entities:
 | `split_multiday_events`  | boolean | `split_multiday_events`  | Whether multi-day events from this calendar span each day they cover (overrides global `split_multiday_events`)                                                                                                                                                                                                                                                          |
 | `event_type`             | string  | `event_type`             | Which class of this calendar's events to keep — `all`, `timed` for events with a clock time, or `all_day` for all-day ones (overrides global `event_type`)                                                                                                                                                                                                               |
 | `allday_expires_at`      | string  | midnight                 | Time of day, as `HH:MM`, at which this calendar's all-day events start counting as past, read against the last day each one covers. Unset, they last until midnight. Only applies while `show_past_events` is `false`                                                                                                                                                    |
+| `days_to_show`           | number  | `days_to_show`           | How many days, counted from the card's start date, this calendar's events may land on (overrides global `days_to_show`, and is capped at it: the card fetches one window for every calendar). Judged on the day each row lands on, like `days_of_week`                                                                                                                   |
 | `days_of_week`           | string  | `-`                      | Restricts this calendar to `weekdays` (Monday to Friday) or `weekends` (Saturday and Sunday), judged on the day each row lands on. Unset, every day qualifies                                                                                                                                                                                                            |
 
 This structure gives you granular control over how information from different calendars is displayed.
@@ -568,6 +569,40 @@ The card has one timer, the refresh interval, and nothing schedules a redraw at 
 you name here. An event retires on the first render after its moment passes — which may be
 the refresh, a dashboard reload, or any edit that redraws the card. Expect the row to go
 within the refresh interval of the time you set, not exactly on it.
+:::
+
+### Showing a Calendar for Fewer Days Than the Card
+
+A per-calendar `days_to_show` narrows one calendar's horizon inside the card's window. The
+card-wide option decides how far ahead the card looks; this one lets a single busy
+calendar stop short of that, so a week-long family view is not drowned by every school
+notice for the next seven days:
+
+```yaml
+entities:
+  - calendar.family # the full week
+  - entity: calendar.school
+    days_to_show: 2 # today and tomorrow only
+days_to_show: 7
+```
+
+Days are counted from the card's start date, the same way the card-wide option counts
+them, so `2` means the first two days of the window (today and tomorrow on a card that
+starts today, Monday and Tuesday on one that starts `monday`). Leave it out and the calendar
+fills the whole window, which is the default.
+
+::: warning It Narrows; It Never Widens
+The card fetches a single window for every calendar, sized by the card-wide
+`days_to_show`. A per-calendar value larger than that has no events to show, so it is
+capped at the card's own. To see one calendar further ahead than the others, raise the
+card-wide value and narrow the rest.
+:::
+
+::: tip It Filters the Day a Row Lands On
+Like [`days_of_week`](#showing-a-calendar-on-weekdays-only) below, the horizon is judged
+on the day each row is drawn on. With `split_multiday_events: true` a four-day conference
+on a two-day calendar keeps exactly its first two days; unsplit, an event already running
+when the window opens is drawn on the window's first day and stays.
 :::
 
 ### Showing a Calendar on Weekdays Only

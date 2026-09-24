@@ -239,6 +239,11 @@ export const EDITOR_STRINGS: Readonly<Record<string, string>> = {
     'last day they cover. Left empty they last until midnight. Only applies while past ' +
     'events are hidden, and takes effect on the card\u2019s next refresh rather than on ' +
     'the minute.',
+  'entity.days_to_show': 'Days to Show',
+  'entity.days_to_show.helper':
+    'How many days, counted from the card\u2019s start date, this calendar may put events ' +
+    'on. Left empty, the card\u2019s own number of days applies; a larger value is capped ' +
+    'at it.',
   'entity.days_of_week': 'Days of the Week',
   'entity.days_of_week.option.inherit.label': 'Every day',
   'entity.days_of_week.option.weekdays.label': 'Monday to Friday only',
